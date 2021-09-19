@@ -12,7 +12,8 @@ import org.springframework.web.client.RestTemplate;
 @Controller
 public class OrderController {
 
-    private static final String PAYMENT_URL = "http://localhost:8081";
+    //    private static final String PAYMENT_URL = "http://localhost:8001";
+    public static final String PAYMENT_URL = "http://CLOUD-PAYMENT-SERVICE";
 
     @Autowired
     private RestTemplate restTemplate;
@@ -28,5 +29,4 @@ public class OrderController {
     public CommonResult getPaymentById(@PathVariable("id") Long id) {
         return restTemplate.getForObject(PAYMENT_URL + "/payment/get/" + id, CommonResult.class);
     }
-
 }
