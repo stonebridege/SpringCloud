@@ -1,5 +1,7 @@
 package com.stonebridge.springcloud.controller;
 
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import com.stonebridge.springcloud.entities.CommonResult;
 import com.stonebridge.springcloud.entities.Payment;
 import com.stonebridge.springcloud.service.PaymentService;
@@ -9,12 +11,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @Slf4j
 public class PaymentController {
 
     @Value("${server.port}")
     private String serverPort;
+
+    @Autowired
+    private DiscoveryClient discoveryClient;
 
     @Autowired
     private PaymentService paymentService;
@@ -40,5 +47,22 @@ public class PaymentController {
         } else {
             return new CommonResult(200, "查询失败，没有对应记录,serverPort：" + serverPort, null);
         }
+    }
+
+    @RequestMapping(value = "/payment/discovery", method = RequestMethod.GET)
+    @ResponseBody
+    public Object discovery() {
+        //Eureka服务中心注册的所有微服务
+        List<String> services = discoveryClient.getServices();
+        for (String element : services) {
+            System.out.println(element);
+        }
+        //获取Eureka服务中心注册的所有微服务中名称为CLOUD-PAYMENT-SERVICE所有实例，因为是集群部署，因此有多个
+        List<ServiceInstance> instances = discoveryClient.getInstances("CLOUD-PAYMENT-SERVICE");
+        for (ServiceInstance element : instances) {
+            System.out.println(element.getServiceId() + "\t" + element.getHost() + "\t" + element.getPort() + "\t"
+                    + element.getUri());
+        }
+        return this.discoveryClient;
     }
 }
