@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.TimeUnit;
+
 @Controller
 @Slf4j
 public class PaymentController {
@@ -45,6 +47,19 @@ public class PaymentController {
     @RequestMapping(value = "/payment/lb")
     @ResponseBody
     public String getPaymentLB() {
+        return serverPort;
+    }
+
+    @RequestMapping(value = "/payment/feign/timeout")
+    @ResponseBody
+    public String paymentFeignTimeOut() {
+        System.out.println("*****paymentFeignTimeOut from port: " + serverPort);
+        //暂停几秒钟线程
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         return serverPort;
     }
 
