@@ -41,4 +41,11 @@ public class PaymentController {
             return new CommonResult(200, "查询失败，没有对应记录,serverPort：" + serverPort, null);
         }
     }
+
+    @RequestMapping(value = "/payment/lb")
+    @ResponseBody
+    public String getPaymentLB() {
+        return serverPort;
+    }
+
 }
