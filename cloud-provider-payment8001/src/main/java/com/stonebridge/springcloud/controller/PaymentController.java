@@ -65,10 +65,10 @@ public class PaymentController {
         }
         return this.discoveryClient;
     }
+
     @RequestMapping(value = "/payment/lb")
     @ResponseBody
-    public String getPaymentLB()
-    {
+    public String getPaymentLB() {
         return serverPort;
     }
 
