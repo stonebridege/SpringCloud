@@ -7,7 +7,8 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: localhost:8848 #配置Nacos地址
+        # 换成nginx的1111端口，做集群
+        server-addr: 192.168.174.148:1111
 
 management:
   endpoints:
