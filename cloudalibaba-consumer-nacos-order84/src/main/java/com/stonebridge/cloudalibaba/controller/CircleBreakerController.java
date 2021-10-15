@@ -21,7 +21,7 @@ public class CircleBreakerController {
 
     @RequestMapping("/consumer/fallback/{id}")
     @ResponseBody
-    @SentinelResource(value = "fallback", fallback = "handlerFallback", blockHandler = "blockHandler")
+    @SentinelResource(value = "fallback", fallback = "handlerFallback", blockHandler = "blockHandler", exceptionsToIgnore = {IllegalArgumentException.class})
     public CommonResult<Payment> fallback(@PathVariable Long id) {
         CommonResult<Payment> result = restTemplate.getForObject(SERVICE_URL + "/paymentSQL/" + id, CommonResult.class, id);
         if (id == 4) {
